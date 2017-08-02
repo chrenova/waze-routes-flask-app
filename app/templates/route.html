@@ -1,0 +1,77 @@
+<html>
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <div id="myDiv" style="width: 100%; height: 800px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script>
+    <!-- JAVASCRIPT CODE GOES HERE -->
+x = [];
+y = [];
+{% for d in data %}
+  x.push('{{ d.timestamp }}');
+  y.push({{ d.total_time/60 }});
+{% endfor %}
+
+
+var data = [
+  {
+    x: x,
+    y: y,
+    type: 'bar'
+  }
+];
+var layout = {
+  xaxis: {
+    "title": "Date / Time"
+  },
+  yaxis: {
+    "title": "Minimum travel time (in minutes)"
+  }
+};
+Plotly.newPlot('myDiv', data, layout);
+
+
+/*
+// console.log(y.map(sec2dt));
+console.log(x);
+
+var data = [{
+  x: x,
+  y: y.map(sec2dt),
+  type: 'scatter'
+}];
+var layout = {
+  xaxis: {
+    "title": "Date / Time"
+  },
+  yaxis: {
+    "title": "Minimum travel time",
+    "tickformat": '%H:%M:%S'
+  }
+};
+
+Plotly.newPlot('myDiv', data, layout)
+
+function sec2dt(v) {
+  var MIN = 60
+  var HOUR = 60 * 60
+
+  var h = Math.floor(v / HOUR)
+  var m =  Math.floor((v - (h * HOUR)) / MIN)
+  var s = Math.floor(v - (h * HOUR) - (m * MIN))
+
+  // you have to provide YYYY-MM-DD
+  // for plotly to understand it as a date
+  return `2017-01-01 ${pad(h)}:${pad(m)}:${pad(s)}`
+}
+
+function pad(v) {
+  return v < 10 ? '0' + v : String(v)
+}
+*/
+  </script>
+</body>
+</html>
